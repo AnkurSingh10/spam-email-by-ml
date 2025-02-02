@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Spam Classifier</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .error {
+            color: red;
+        }
+        .not-spam {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Email Spam Classifier</h1>
+
+    <textarea id="email" rows="10" cols="50" placeholder="Enter your email here"></textarea>
+    <br>
+    <button onclick="checkEmail()">CHECK</button>
+
+    <h2 id="result"></h2>
+
+    <script>
+        async function checkEmail() {
+            const emailText = document.getElementById('email').value;
+            if (emailText) {
+                try {
+                    const response = await axios.post('http://localhost:8080/api/predict', { content: emailText });
+                    if (response.status === 200) {
+                        const prediction = response.data.prediction;
+                        const resultElement = document.getElementById('result');
+                        if (prediction === 1) {
+                            resultElement.innerHTML = 'Spam';
+                            resultElement.className = 'error';
+                        } else {
+                            resultElement.innerHTML = 'Not Spam';
+                            resultElement.className = 'not-spam';
+                        }
+                    } else {
+                        alert(`Error: ${response.status}`);
+                    }
+                } catch (error) {
+                    alert(`Error: ${error.response.status}`);
+                }
+            } else {
+                alert('Please enter an email.');
+            }
+        }
+    </script>
+</body>
+</html>
