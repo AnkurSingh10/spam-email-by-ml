@@ -1,7 +1,7 @@
 import pickle
 
-tf = pickle.load(open("model/tfidf_vectorizer.pkl", 'rb'))
-model = pickle.load(open("model/model1.pkl", 'rb'))
+tf = pickle.load(open("model/tfidf_vectorizer2.pkl", 'rb'))
+model = pickle.load(open("model/model3.pkl", 'rb'))
 
 def model_predict(email):
     if email == "":
